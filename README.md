@@ -41,15 +41,15 @@
     <p>{{ name }}</p> <!-- Change according to your name -->
     <h5>Class: </h5>
     <p>{{ class }}</p> <!-- Change according to your class -->
-    <h5>Sepatu: </h5> <!-- Change according to your product -->
-    <p>Price : Rp.100.000</p> <!-- Change according to your class -->
-    <p>Description : Sepatu Bola Nike Mercurial</p> <!-- Change according to your class -->
-    <h5>Jersey </h5> <!-- Change according to your product -->
-    <p>Price : Rp.1.000.000</p> <!-- Change according to your class -->
-    <p>Descritpion : Jersey Real Madrid</p> <!-- Change according to your class -->
-    <h5>NameSet Baju Bola: </h5> <!-- Change according to your product -->
-    <p>Price = Rp 50.000</p> <!-- Change according to your class -->
-    <p>Description : Ronaldo 7</p> <!-- Change according to your class -->
+    <h5>Sepatu: </h5> 
+    <p>Price : Rp.100.000</p> 
+    <p>Description : Sepatu Bola Nike Mercurial</p> 
+    <h5>Jersey </h5> 
+    <p>Price : Rp.1.000.000</p> 
+    <p>Descritpion : Jersey Real Madrid</p>
+    <h5>NameSet Baju Bola: </h5> 
+    <p>Price = Rp 50.000</p> 
+    <p>Description : Ronaldo 7</p>
 ```
 
 
