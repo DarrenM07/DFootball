@@ -1,4 +1,4 @@
-#DFootball
+DFootball
 
 link_deploy = darren-marcello-darrenecommerce.pbp.cs.ui.ac.id
 1. Explain how you implemented the checklist above step-by-step (not just following the tutorial).
