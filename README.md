@@ -52,7 +52,7 @@ link_deploy = darren-marcello-darrenecommerce.pbp.cs.ui.ac.id
 ```
 
 
-    6. Create a view in views.py :
+   6. Create a view in views.py :
     This is for display your name and class.This is for handle an HTTP  request and returns the appropriate view, and will pass the data from context dict. In views.py, define a function 
 
     from django.shortcuts import render
@@ -65,7 +65,7 @@ link_deploy = darren-marcello-darrenecommerce.pbp.cs.ui.ac.id
 
         return render(request, "main.html", context)
 
-    7. Route the view in urls.py :
+   7. Route the view in urls.py :
     In urls.py of the main app, write this code
 
     from django.urls import path
@@ -77,7 +77,7 @@ link_deploy = darren-marcello-darrenecommerce.pbp.cs.ui.ac.id
         path('', show_main, name='show_main'),
     ]
 
-    8. Deployin to PWS :
+   8. Deployin to PWS :
     Access the PWS at https://pbp.cs.ui.ac.id and login into your account. Create a new project, and store it. Add the PWS deployment URL to allowed host in settings.py
 
     ALLOWED_HOSTS = ["localhost", "127.0.0.1", "<your pws deploy url>"]
