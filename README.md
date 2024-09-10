@@ -31,6 +31,7 @@ link_deploy = darren-marcello-darrenecommerce.pbp.cs.ui.ac.id
     
     5. Make html file :
     In main directory, create a html file named main in the main.html and input this. 
+```
     <h1>DFootball Store</h1>
     <h5>Name app: </h5>
     <p>{{ name_app }}</p> <!-- Change according to your npm -->
@@ -47,6 +48,8 @@ link_deploy = darren-marcello-darrenecommerce.pbp.cs.ui.ac.id
     <h5>NameSet Baju Bola: </h5> <!-- Change according to your product -->
     <p>Price = Rp 50.000</p> <!-- Change according to your class -->
     <p>Description : Ronaldo 7</p> <!-- Change according to your class -->
+```
+
 
     6. Create a view in views.py :
     This is for display your name and class.This is for handle an HTTP  request and returns the appropriate view, and will pass the data from context dict. In views.py, define a function 
