@@ -89,7 +89,7 @@ Git is a version control that allowing developers to track changes in their code
 
 4. In your opinion, out of all the frameworks available, why is Django used as the starting point for learning software development?
 
-Django is a high-level Python framework that promotes rapid development with clean and pragmatic design. It handles much of the heavy lifting, such as routing, database management, and user authentication, which makes it a good starting point for beginners to focus on learning core development concepts without getting lost in the complexity of lower-level details.
+Django is a high-level Python framework that promotes rapid development with clean and pragmatic design. It handles much of the heavy lifting, such as routing, database management, and user authentication, which makes it a good starting point for beginners to focus on learning core development concepts without getting lost in the complexity of lower-level details..
 
 
 5. Why is the Django model called an ORM?
