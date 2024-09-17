@@ -301,13 +301,7 @@ Without the crsf_token, an attacker could cause unauthorized actions, such as ch
     path('xml/<str:id>/', show_xml_by_id, name='show_xml_by_id'),
     path('json/<str:id>/', show_json_by_id, name='show_json_by_id'),
     ```
-    14. Run the Django project with the python manage.py runserver command and go to http://localhost:8000/xml/[id]/ or http://localhost:8000/json/[id]/.
-
-
-3. Create URL routing for each of the views added in point 2.
-
-
-
+    14. go to http://localhost:8000/xml/[id]/ or http://localhost:8000/json/[id]/ change the "id" by ur pk
 
 
 **6. Access the four URLs in point 2 using Postman, take screenshots of the results in Postman, and add them to README.md.**
