@@ -123,24 +123,24 @@ The csrf_token is used to prevent Cross-Site Request Forgery (CSRF) attacks. A C
 Without the crsf_token, an attacker could cause unauthorized actions, such as changing account information or executing transactions without the user’s consent, by exploiting the lack of protection by creating a malicious form that automatically submits data to your site on behalf of an unsuspecting user.
 
 **5. Explain how you implemented the checklist above step-by-step (not just following the tutorial).**
-1. Create a form input to add a model object to the previous app.
-    1. Create a new file in the main directory with the name forms.py to create the structure of the form that can receive new Mood Entry datas. Add the following code to the forms.py file
+1. Create a form input to add a model object.
+    1. Create a new file in the main directory with the name forms.py and add the following code :
     ```
     from django.forms import ModelForm
     from main.models import ObjectEntry
 
     class ModelObjectForm(ModelForm):
         class Meta:
-            model = ObjectEntry  #to indicate the model that will be used for the form. When data from the form is saved, the form's input will be saved as an object of MoodEntry.
-            fields = ["name", "price", "description"] #to indicate the fields of the MoodEntry model that will be used for the form. The time field is not included in the fields list because it will be added automatically.
+            model = ObjectEntry  #indicate the model that will be used for the form.
+            fields = ["name", "price", "description"] #indicate the fields of the ObjectEntry model.
     ```
 
-    2. Open the views.py file in the main directory and add the following import at the top of the file.
+    2. Open the views.py and add this code :
     ```
     from django.shortcuts import render, redirect
     ```
 
-    3. In the same file, create a new function with the name model_object that receives a parameter request. Add the following code below to produce a form that can automatically add a Object Entry data automatically when data is submitted from the form.
+    3. Create a new function with the name model_object and add the following code below :
     ```
     def model_object(request):
     form = ModelObjectForm(request.POST or None) #is used to create a new MoodEntryForm with the input from the user in request.POST entered into the QueryDict.
@@ -152,10 +152,12 @@ Without the crsf_token, an attacker could cause unauthorized actions, such as ch
     context = {'form': form}
     return render(request, "create_model_object.html", context)
     ```
-    4. Change the show_main function that already exists in the views.py file to the following.
+    the function is to produce a form that can automatically add a ObjectEntry data when data is submitted.
+
+    4. Change the show_main function in the views.py :
     ```
     def show_main(request):
-    object_entries = ObjectEntry.objects.all() #used to retrieve all objects of the ObjectEntry objects stored in the database.
+    object_entries = ObjectEntry.objects.all() #retrieve all objects of the ObjectEntry objects stored in the database.
     context = {
         'name': 'Darren Marcello Sidabutar',
         'class': 'PBP KKI',
@@ -166,15 +168,15 @@ Without the crsf_token, an attacker could cause unauthorized actions, such as ch
 
     return render(request, "main.html", context)
     ```
-    5. Open the urls.py file in the main directory and import the create_mood_entry function that you just created.
+    5. Open the urls.py file in the main directory and import the model_object function.
     ```
     from main.views import show_main, model_object
     ```
-    6. Add the URL path to the urlpatterns variable in the urls.py file in the main directory to access the function that was imported in the previous point.
+    6. Add the URL path to the urlpatterns variable in the urls.py :
     ```
     path('model-object', model_object , name='model_object'),
     ```
-    7. Create a new HTML file with the name create_model_object.html in the main/templates directory. Fill in the create_model_object.html file with the following code.
+    7. Create a new HTML file with the name create_model_object.html in the main/templates directory and fill in with the following code.
     ```
     {% extends 'base.html' %} 
     {% block content %}
@@ -194,8 +196,8 @@ Without the crsf_token, an attacker could cause unauthorized actions, such as ch
     </form>
 
     {% endblock %}
-    ```
-    8. Open the main.html file and add the following code within the {% block content %} block to display the data in the form in the form of a table and the "Add New Mood Entry" button that will redirect to the form page
+    ```    
+    8. Open the main.html and add the following code within the {% block content %} block :
     ```
     {% if not object_entries %}
     <p>There are no object data in DFootball Store.</p>
@@ -226,13 +228,12 @@ Without the crsf_token, an attacker could cause unauthorized actions, such as ch
     </a>
     {% endblock content %}
     ```
+    it is to display the data in the form in the form of a table and the "Add Item" button.
 
-    9. Run the Django project with the 
-    ```
-    python manage.py runserver
-    ```
+    9. Run the Django project 
+
 2. Add 4 views to view the added objects in XML, JSON, XML by ID, and JSON by ID formats.
-    1. Open the views.py file in the main directory and add the HttpResponse and Serializer imports at the top of the file.
+    1. Open the views.py and add the HttpResponse and Serializer imports.
     ```
     from django.http import HttpResponse
     from django.core import serializers
