@@ -35,5 +35,8 @@
 
 <a href="{% url 'main:model_object' %}">
   <button>Add Item</button>
+  <a href="{% url 'main:logout' %}">
+    <button>Logout</button>
+    <h5>Last login session: {{ last_login }}</h5>
 </a>
 {% endblock content %}
