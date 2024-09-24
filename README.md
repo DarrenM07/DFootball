@@ -314,8 +314,10 @@ Without the crsf_token, an attacker could cause unauthorized actions, such as ch
 ![](image/XMLID_Postman.jpg)
 
 
-**-------------------------------------------------------------------------------------**
+**-------------------------------------------------------------------------------------------------**
+
 **ASSIGNMENT 4**
+
 **1. What is the difference between HttpResponseRedirect() and redirect()?**
 HttpResponseRedirect() : is a Django class-based response. It takes a URL as a parameter and returns an HTTP response that redirects the user to that URL.
 
