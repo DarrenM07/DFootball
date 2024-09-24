@@ -1,6 +1,8 @@
 **DFootball**
----------------------------------------------------------------
+**---------------------------------------------------------------**
+
 **Assignment 2**
+
 **link_deploy = darren-marcello-darrenecommerce.pbp.cs.ui.ac.id**
 
 **1. Explain how you implemented the checklist above step-by-step (not just following the tutorial).**
@@ -86,7 +88,6 @@
     Run the project command instruction in the PWS page.
 
 **2. Create a diagram that contains the request client to a Django-based web application and the response it gives, and explain the**
-**2. Create a diagram that contains the request client to a Django-based web application and the response it gives, and explain the**
 relationship between urls.py, views.py, models.py, and the html file.
 ![](image/diagram.jpg)
 
@@ -94,17 +95,15 @@ relationship between urls.py, views.py, models.py, and the html file.
 Git is a version control that allowing developers to track changes in their codebase, collaborate with others, and manage code history of all modifications. And it supports teams to work on different branches for working on a new features without affect the codebabase and merge their work efficiently for integrating those features without problem.
 
 **4. In your opinion, out of all the frameworks available, why is Django used as the starting point for learning software development?**
-**4. In your opinion, out of all the frameworks available, why is Django used as the starting point for learning software development?**
 Django is a high-level Python framework that promotes rapid development with clean and pragmatic design. It handles much of the heavy lifting, such as routing, database management, and user authentication, which makes it a good starting point for beginners to focus on learning core development concepts without getting lost in the complexity of lower-level details.
 
-**5. Why is the Django model called an ORM?**
 **5. Why is the Django model called an ORM?**
 Django's models are an ORM (Object-Relational Mapping) system. It allows developers to interact with databases using Python objects. It simplifies management of database operations while keeping the flexibility to handle complex queries when needed.
 
 
-**--------------------------------------------------------------------**
+**------------------------------------------------------------------------------------------------**
 
-Assignment 3
+**Assignment 3**
 
 **1. Explain why we need data delivery in implementing a platform.**
  Data delivery is critical in platform implementation because it allows information to be transferred between systems, users or others. The platform cannot interact with external services without efficient data delivery, and it provides real-time updates, or maintains a consistent user experience. And data delivery can ensure that various platform components can communicate with each other properly.
