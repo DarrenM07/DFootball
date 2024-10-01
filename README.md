@@ -146,7 +146,7 @@ Without the crsf_token, an attacker could cause unauthorized actions, such as ch
     3. Create a new function with the name model_object and add the following code below :
     ```
     def model_object(request):
-    form = ModelObjectForm(request.POST or None) #is used to create a new MoodEntryForm with the input from the user in request.POST entered into the QueryDict.
+    form = ModelObjectForm(request.POST or None) #is used to create a new ModelObjectForm with the input from the user in request.POST entered into the QueryDict.
 
     if form.is_valid() and request.method == "POST": #is used to validate the input from the form.
         form.save() #is used to create and save the data from the form.
@@ -241,7 +241,7 @@ Without the crsf_token, an attacker could cause unauthorized actions, such as ch
     from django.http import HttpResponse
     from django.core import serializers
     ```
-    2. Create a new function that receives a parameter request with the name show_xml and create a variable in the function itself that stores the result of the query of all data in the MoodEntry.
+    2. Create a new function that receives a parameter request with the name show_xml and create a variable in the function itself that stores the result of the query of all data in the ObjectEntry.
     ```
     def show_xml(request):
     data = ObjectEntry.objects.all()
@@ -260,7 +260,7 @@ Without the crsf_token, an attacker could cause unauthorized actions, such as ch
     ```
     path('xml/', show_xml, name='show_xml'),
     ```
-    6. Open the views.py file in the main directory and create a new function that receives a parameter request with the name show_json with a variable in the function itself that stores the result of the query of all data in the MoodEntry.
+    6. Open the views.py file in the main directory and create a new function that receives a parameter request with the name show_json with a variable in the function itself that stores the result of the query of all data in the ObjectEntry.
     ```
     def show_json(request):
     data = ObjectEntry.objects.all()
@@ -297,7 +297,7 @@ Without the crsf_token, an attacker could cause unauthorized actions, such as ch
     ```
     12. Open the urls.py file in the main directory and import the function that you just created.
     ```
-    from main.views import show_main, create_mood_entry, show_xml, show_json, show_xml_by_id, show_json_by_id
+    from main.views import show_main, create_object_entry, show_xml, show_json, show_xml_by_id, show_json_by_id
     ```
     13. Add the URL path to the urlpatterns variable in the urls.py file in the main directory to access the function that was imported in the previous point.
     ```
@@ -552,7 +552,7 @@ Django uses session cookies to remember logged-in users by assigning a session I
     @login_required(login_url='/login')
     def show_main(request):
     ```
-    In views.py, the login_required decorator is imported from Django's authentication system to restrict access to certain views. By adding the @login_required(login_url='/login') decorator above the show_main function, access to the main page is restricted to authenticated users only. If a user tries to access the main page without being logged in, they will be redirected to the login page. This ensures that only logged-in users can view mood entries, enhancing security and user privacy. After implementing this, running the Django server will redirect unauthenticated users to the login page when attempting to access the main page.
+    In views.py, the login_required decorator is imported from Django's authentication system to restrict access to certain views. By adding the @login_required(login_url='/login') decorator above the show_main function, access to the main page is restricted to authenticated users only. If a user tries to access the main page without being logged in, they will be redirected to the login page. This ensures that only logged-in users can view object entries, enhancing security and user privacy. After implementing this, running the Django server will redirect unauthenticated users to the login page when attempting to access the main page.
 
 6. Using Data (Cookies)
     In this update, we are enhancing the Django application to store and display the user's last login time using cookies. First, in the login_user function, after a successful login, a cookie named last_login is created with the current date and time using the response.set_cookie() method. This stores the last login time as a cookie on the user's browser. 
@@ -573,7 +573,7 @@ Django uses session cookies to remember logged-in users by assigning a session I
         'name': 'Pak Bepe',  
         'class': 'PBP D',  
         'npm': '2306123456',  
-        'mood_entries': mood_entries,  
+        'object_entries': object_entries,  
         'last_login': request.COOKIES['last_login'],
     }
     ```
@@ -636,3 +636,703 @@ Django uses session cookies to remember logged-in users by assigning a session I
         ...
     ```
     The code filters and retrieves only the ObjectEntry objects belonging to the logged-in user and displays them, while request.user.username is used to show the user's name on the main page. And after that we should do makemigrations and migrate before we run the server.
+
+**-------------------------------------------------------------------------------------------**
+**ASSIGNMENT 5**
+### 1. If there are multiple CSS selectors for an HTML element, explain the priority order of these CSS selectors!
+
+When multiple CSS selectors apply to the same HTML element, the browser determines which styles to apply based on the concept of specificity. Specificity is calculated based on the types of selectors used: inline styles have the highest priority, followed by IDs, classes, attributes, and pseudo-classes, and finally, element selectors and pseudo-elements. Inline styles, written directly in the HTML element, override all other styles. ID selectors, denoted by a `#`, come next and are more specific than class selectors, which are prefixed with a `.`. Following these, class selectors and attribute selectors have higher specificity than type selectors (e.g., `div`, `p`). If selectors have the same specificity, the one that appears last in the CSS will take precedence. This hierarchy ensures that developers have a systematic way to control styling in their applications.
+
+### 2. Why does responsive design become an important concept in web application development? Give examples of applications that have and have not implemented responsive design!
+
+Responsive design is crucial in web application development as it ensures that a website functions well on a variety of devices and screen sizes, from mobile phones to large desktop monitors. The importance of this approach stems from the increasing use of mobile devices to access the internet, making it vital for a seamless user experience across all platforms. Applications like Facebook and Twitter exemplify effective responsive design; they automatically adjust layouts and content based on the user's device, enhancing usability and engagement. Conversely, websites that do not implement responsive design, such as older government sites, may display poorly on mobile devices, leading to user frustration and a higher bounce rate. This highlights the need for developers to prioritize responsive design in their projects to meet user expectations.
+
+### 3. Explain the differences between margin, border, and padding, and how to implement these three things!
+
+Margin, border, and padding are essential concepts in CSS that dictate spacing and layout around HTML elements. Margin is the outermost space that creates distance between elements, effectively controlling the spacing around a box without affecting its dimensions. The border surrounds the padding and content, providing a visible line that can vary in thickness and style, allowing for decorative elements around an element. Padding, on the other hand, is the space between the content of the box and its border; it increases the size of the element while affecting how the content is visually positioned. To implement these properties, developers can use the shorthand CSS properties `margin`, `border`, and `padding`, specifying values for each side (top, right, bottom, left) or using the shorthand syntax for all sides at once.
+
+### 4. Explain the concepts of flex box and grid layout along with their uses!
+
+Flexbox and Grid are powerful CSS layout models designed to create complex responsive layouts more efficiently. Flexbox, or the Flexible Box Layout, allows for one-dimensional layouts, where items can be arranged in either a row or a column. It provides flexible spacing, alignment, and distribution of items within a container, making it ideal for components like navigation bars or image galleries where items need to adjust according to available space. In contrast, CSS Grid Layout is a two-dimensional layout system that enables developers to design complex web layouts with rows and columns. It allows for precise placement of elements on a grid, making it suitable for entire page layouts where the positioning of various sections is critical. Both Flexbox and Grid enhance the ability to create responsive designs, ensuring that web applications look great on any device.
+
+### 5. Explain how you implemented the checklist above step-by-step (not just following the tutorial)!
+1. Adding Tailwind to the Django Project:
+    To incorporate Tailwind into your Django project, you start by ensuring that your HTML structure is ready to handle responsive designs. In base.html, you add a <meta name="viewport"> tag to ensure the page adjusts well on different device sizes. Then, to integrate Tailwind, you simply link the Tailwind CDN by placing the script tag in the <head> section. This will allow you to use Tailwind's utility classes throughout your application without needing to install it locally.
+
+    Make sure this code below is already in base.html :
+    ```
+    <head>
+    {% block meta %}
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% endblock meta %}
+    </head>
+    ```
+
+    and add tailwind cdn script:
+    ```
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    ```
+
+2. Adding the Edit Object Feature:
+    To add an edit feature for object entries, you need to create a new function edit_object in views.py. This function fetches the specific object entry using its id, initializes a form with that entry’s data, and allows users to modify and submit the form. If the form is valid and the request method is POST, the changes are saved, and the user is redirected to the main page. You also need to create an HTML template edit_object.html, which will render the form. To make this functionality accessible, a corresponding URL path must be added in urls.py, and an "Edit" button should be included for each object entry in main.html.
+
+    edit_object function :
+    ```
+    def edit_object(request, id):
+    # Get object entry based on id
+    object = ObjectEntry.objects.get(pk = id)
+
+    # Set object entry as an instance of the form
+    form = ModelObjectForm(request.POST or None, instance=object)
+
+    if form.is_valid() and request.method == "POST":
+        # Save form and return to home page
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {'form': form}
+    return render(request, "edit_object.html", context)
+    ```
+
+    and dont forget to add the imports in views.py!
+    ```
+    from django.shortcuts import render, redirect, reverse
+    from django.http import HttpResponse, HttpResponseRedirect
+    ```
+
+    and create edit_object.html and fill with the following code :
+    ```
+    {% extends 'base.html' %}
+
+    {% load static %}
+
+    {% block content %}
+
+    <h1>Edit Object</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="Edit Object"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    {% endblock %}
+    ```
+
+    and dont forget to put the import in urls.py and the path
+    ```
+    from main.views import edit_object
+    ```
+
+    ```
+    path('edit-object/<uuid:id>', edit_object, name='edit_object'),
+    ```
+
+    and in the main.html add this code below to build a URL by adding the primary key (pk) of the object_entry object as a parameter.
+    ```
+    <tr>
+     
+        <td>
+            <a href="{% url 'main:edit_object' object_entry.pk %}">
+                <button>
+                    Edit
+                </button>
+            </a>
+        </td>
+    </tr>
+    ```
+
+
+
+3. Adding the Delete Object Feature:
+    To add the feature that allows users to delete object entries in your Django application, you first need to create a function named `delete_object` in the `views.py` file located in the main folder. This function takes two parameters: `request` and `id`. The function retrieves the specific object entry from the database using its unique `id`, and once the object is found, it calls the `delete()` method to remove the entry from the database. After the deletion, the user is redirected back to the main page using `HttpResponseRedirect` and the `reverse()` function, which navigates to the `'main:show_main'` page. The code for this function looks like this:
+
+    ```
+    def delete_object(request, id):
+        # Get object based on id
+        object = ObjectEntry.objects.get(pk = id)
+        # Delete object
+        object.delete()
+        # Return to home page
+        return HttpResponseRedirect(reverse('main:show_main'))
+    ```
+
+    Next, in the `urls.py` file located in the main folder, you need to import the `delete_object` function so that it can be accessed through a URL. This is done by adding the import statement for `delete_object` at the top of the file:
+
+    ```
+    from main.views import delete_object
+    ```
+
+    After importing, you need to add a URL path to the `urlpatterns` list that will map the URL to the `delete_object` function. If your `id` field in the `ObjectEntry` model is a UUID, the path will look like this:
+
+    ```
+    path('delete/<uuid:id>', delete_object, name='delete_object'),
+    ```
+
+    If your `id` field is an integer, modify the path by changing `<uuid:id>` to `<int:id>` to match the data type of the `id`.
+
+    Now, to display a "Delete" button for each object entry on the main page, open the `main.html` file in the `main/templates` folder. Modify the code so that there is a delete button in the table row for each object entry. This is done by adding a URL link to the `delete_object` view using the primary key (`pk`) of the `object_entry` object. The code looks like this:
+
+    ```
+    <tr>
+        ...
+        <td>
+            <a href="{% url 'main:edit_object' object_entry.pk %}">
+                <button>Edit</button>
+            </a>
+        </td>
+        <td>
+            <a href="{% url 'main:delete_object' object_entry.pk %}">
+                <button>
+                    Delete
+                </button>
+            </a>
+        </td>
+    </tr>
+    ```
+
+4. Adding a Navigation Bar:
+    To add a navigation bar (navbar) to your Django web application, you will begin by creating a new HTML file named navbar.html in the templates/ folder in your project’s root directory. The purpose of the navbar is to provide easy navigation across various pages or features of the application. It typically appears at the top of the page and contains links or buttons to different sections of the app. You can populate the navbar.html file with the following code template:
+
+    ```
+    <nav class="bg-[#074173] shadow-lg fixed top-0 left-0 z-40 w-screen">
+        <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+            <!-- Mobile menu button-->
+            <button type="button" class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
+            <span class="absolute -inset-0.5"></span>
+            <span class="sr-only">Open main menu</span>
+            <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+            <svg class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+            </button>
+          </div>       
+        </div>
+      </div>
+    </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <div class="flex items-center">
+            <h1 class="text-2xl font-bold text-center text-white">DFootball</h1>
+                <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                <div class="hidden sm:ml-6 sm:block">
+                    <div class="flex space-x-4">
+                    <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+                    <a href="#" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">Home</a>
+                    <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Categories</a>
+                    <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Cart</a>
+                    <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">About Store</a>
+                    </div>
+                  </div>
+                </div>        
+            </div>
+            <div class="hidden md:flex items-center">
+            {% if user.is_authenticated %}
+            <span class="text-white mr-4">Welcome, {{ user.username }}</span>
+                <a href="{% url 'main:logout' %}" class="text-center bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                Logout
+                </a>
+            {% else %}
+                <a href="{% url 'main:login' %}" class="text-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300 mr-2">
+                Login
+                </a>
+                <a href="{% url 'main:register' %}" class="text-center bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                Register
+                </a>
+            {% endif %}
+            </div>
+            <div class="md:hidden flex items-center">
+                <button class="mobile-menu-button">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                        <path d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+          </div>
+        </div>
+        <!-- Mobile menu -->
+        <div class="mobile-menu hidden md:hidden  px-4 w-full md:max-w-full">
+          <div class="pt-2 pb-3 space-y-1 mx-auto">
+            {% if user.is_authenticated %}
+              <span class="block text-gray-300 px-3 py-2">Welcome, {{ user.username }}</span>
+              <a href="{% url 'main:logout' %}" class="block text-center bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                Logout
+              </a>
+            {% else %}
+              <a href="{% url 'main:login' %}" class="block text-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300 mb-2">
+                Login
+              </a>
+              <a href="{% url 'main:register' %}" class="block text-center bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                Register
+              </a>
+            {% endif %}
+          </div>
+        </div>
+        <script>
+          const btn = document.querySelector("button.mobile-menu-button");
+          const menu = document.querySelector(".mobile-menu");
+        
+          btn.addEventListener("click", () => {
+            menu.classList.toggle("hidden");
+          });
+        </script>
+      </nav>
+    ```
+
+    This code defines a navigation bar (navbar) for a web application, specifically designed with Tailwind CSS classes for styling and a responsive design. The navbar is fixed at the top of the page and features a blue background (`bg-[#074173]`) with various sections. It starts with a mobile menu button for smaller screens, which can toggle between being visible or hidden. This mobile button uses two SVG icons: one for the menu and one for closing the menu. The main navbar includes the site title ("DFootball") and a set of navigation links ("Home," "Categories," "Cart," "About Store"), which change appearance on hover. These links provide easy access to different sections of the web application. For larger screens, the navbar includes a user authentication section where logged-in users are greeted by their username, and buttons are provided for login, logout, and registration, depending on the user’s authentication status. The navbar is fully responsive, adapting to different screen sizes. The script at the end adds functionality to the mobile menu button, toggling its visibility when clicked.
+
+    Next, we need to include this navigation bar in your existing HTML files. In main.html, create_object_entry.html, and edit_object.html files located in the main/templates/ subdirectory, you should include the navbar using the Django {% include %} tag. The inclusion will ensure that the navbar appears on every page where it is added. Update your HTML files to look like this:
+
+    ```
+    {% extends 'base.html' %}
+    {% block content %}
+    {% include 'navbar.html' %}
+    ...
+    {% endblock content %}
+    ```
+
+5. Configuring Static Files:
+    
+    We need to add the **WhiteNoise middleware** to `settings.py`. This middleware helps Django manage static files efficiently, especially in production mode when `DEBUG=False`. By placing the line `'whitenoise.middleware.WhiteNoiseMiddleware'` directly under `'django.middleware.security.SecurityMiddleware'`, static files will automatically be served in production without additional configurations.
+
+    Next, in `settings.py`, it is important to set the correct paths for serving static files depending on the environment. The `STATIC_URL` variable is set to `'/static/'` to define the base URL for static content. When in **development mode** (`DEBUG=True`), the `STATICFILES_DIRS` variable should point to the `/static` directory in the project root, allowing Django to serve files during development. In **production mode** (`DEBUG=False`), you need to set `STATIC_ROOT`, which refers to the location where Django will collect static files when running the `collectstatic` command. This setup ensures static files are served properly in both modes. 
+
+    Here is the code snippet for the configuration:
+    ```
+    MIDDLEWARE = [
+        'django.middleware.security.SecurityMiddleware',
+        'whitenoise.middleware.WhiteNoiseMiddleware', # Add it directly under SecurityMiddleware
+        ...
+    ]
+
+    STATIC_URL = '/static/'
+
+    if DEBUG:
+        STATICFILES_DIRS = [
+            BASE_DIR / 'static' # refers to /static root project in development mode
+        ]
+    else:
+        STATIC_ROOT = BASE_DIR / 'static' # refers to /static root project in production mode
+    ```
+
+6. Adding Styles to the Application with Tailwind and External CSS
+    We can enhance the aesthetics of your application by incorporating Tailwind CSS and a custom CSS file. To begin, create a global.css file in the /static/css directory within your project's root. This file allows you to define your custom classes and styles, providing a personalized touch to your application. Once you've established your styles, you'll need to link both the global.css and the Tailwind CSS script in your base.html file. To do this, modify base.html as follows:
+
+    Create a global.css file in /static/css in the root directory, and link global.css and Tailwind script to base.html and modify it as follows :
+
+    ```
+    {% load static %}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        {% block meta %} {% endblock meta %}
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="{% static 'css/global.css' %}"/>
+    </head>
+    <body>
+        {% block content %} {% endblock content %}
+    </body>
+    </html>
+    ```
+    and modify the global.css as follows :
+    ```
+    .form-style form input, form textarea, form select {
+        width: 100%;
+        padding: 0.5rem;
+        border: 2px solid #bcbcbc;
+        border-radius: 0.375rem;
+    }
+    .form-style form input:focus, form textarea:focus, form select:focus {
+        outline: none;
+        border-color: #00ff00;
+        box-shadow: 0 0 0 3px #00ff00;
+    }
+    @keyframes shine {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+    }
+    .animate-shine {
+        background: linear-gradient(120deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.3));
+        background-size: 200% 100%;
+        animation: shine 3s infinite;
+    }
+    ```
+    In this implementation, we create a `global.css` file in the `/static/css` directory to define custom styles for our application, enhancing its visual appeal. The `global.css` includes styles for form elements, ensuring that input fields, text areas, and select boxes have a consistent appearance with full width, padding, and a border. Additionally, it specifies focus styles, changing the border color and adding a glowing effect when elements are active, which improves user interaction. The CSS also defines a keyframe animation called `shine`, which creates a shimmering effect by animating a linear gradient background. The `.animate-shine` class utilizes this animation, giving elements a dynamic visual effect that can be applied to any component in the application. To ensure these styles are effective, we link `global.css` and the Tailwind CSS script in the `base.html` file, allowing us to combine the utility-first approach of Tailwind with our custom styling for a cohesive design.
+
+    **after that, modify the login page in login.html into the code as follows :**
+    ```
+    {% extends 'base.html' %}
+
+    {% block meta %}
+    <title>Login</title>
+    {% endblock meta %}
+
+    {% block content %}
+    <div class="min-h-screen flex items-center justify-center w-screen bg-[#FFF6E9] py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <div>
+        <h2 class="mt-6 text-center text-black text-3xl font-extrabold text-gray-900">
+            Login to your account
+        </h2>
+        </div>
+        <form class="mt-8 space-y-6" method="POST" action="">
+        {% csrf_token %}
+        <input type="hidden" name="remember" value="true">
+        <div class="rounded-md shadow-sm -space-y-px">
+            <div>
+            <label for="username" class="sr-only">Username</label>
+            <input id="username" name="username" type="text" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Username">
+            </div>
+            <div>
+            <label for="password" class="sr-only">Password</label>
+            <input id="password" name="password" type="password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Password">
+            </div>
+        </div>
+
+        <div>
+            <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#41A06F] hover:bg-[#41A06F] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#41A06F]">
+            Sign in
+            </button>
+        </div>
+        </form>
+
+        {% if messages %}
+        <div class="mt-4">
+        {% for message in messages %}
+        {% if message.tags == "success" %}
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                    <span class="block sm:inline">{{ message }}</span>
+                </div>
+            {% elif message.tags == "error" %}
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                    <span class="block sm:inline">{{ message }}</span>
+                </div>
+            {% else %}
+                <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative" role="alert">
+                    <span class="block sm:inline">{{ message }}</span>
+                </div>
+            {% endif %}
+        {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="text-center mt-4">
+        <p class="text-sm text-black">
+            Don't have an account yet?
+            <a href="{% url 'main:register' %}" class="font-medium text-[#074173] hover:text-[#0A5B8C]">      
+            Register Now
+            </a>
+        </p>
+        </div>
+    </div>
+    </div>
+    {% endblock content %}
+    ```
+    The `login.html` file is designed to extend the `base.html` template, ensuring consistency across the Django project. It sets the page title to "Login" within the meta block, and the content block contains the main structure of the login form. Using Tailwind CSS, the layout is styled for a modern and responsive interface. The form is centered both vertically and horizontally using classes such as `min-h-screen`, `flex`, and `justify-center`. The form fields for username and password are styled with utility classes that ensure full width, padding, and border styles, along with focus states to improve user interaction. The submit button is styled with custom colors and hover effects. If there are any messages (success, error, or info), they are displayed in appropriately colored alert boxes. Lastly, there's a link prompting users to register if they don't have an account, styled to stand out with a distinct hover effect.
+
+    **after that, modify the register page in register.html into the code as follows :**
+    ```
+    {% extends 'base.html' %}
+
+    {% block meta %}
+    <title>Register</title>
+    {% endblock meta %}
+
+    {% block content %}
+    <div class="min-h-screen flex items-center justify-center bg-[#FFF6E9] py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 form-style">
+        <div>
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-black">
+            Create your account
+        </h2>
+        </div>
+        <form class="mt-8 space-y-6" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="remember" value="true">
+        <div class="rounded-md shadow-sm -space-y-px">
+            {% for field in form %}
+            <div class="{% if not forloop.first %}mt-4{% endif %}">
+                <label for="{{ field.id_for_label }}" class="mb-2 font-semibold text-black">
+                {{ field.label }}
+                </label>
+                <div class="relative">
+                {{ field }}
+                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                    {% if field.errors %}
+                    <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    {% endif %}
+                </div>
+                </div>
+                {% if field.errors %}
+                {% for error in field.errors %}
+                    <p class="mt-1 text-sm text-red-600">{{ error }}</p>
+                {% endfor %}
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <div>
+            <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#41A06F] hover:bg-[#3B8F62] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#41A06F]">
+            Register
+            </button>
+        </div>
+        </form>
+
+        {% if messages %}
+        <div class="mt-4">
+        {% for message in messages %}
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <span class="block sm:inline">{{ message }}</span>
+        </div>
+        {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="text-center mt-4">
+        <p class="text-sm text-black">
+            Already have an account?
+            <a href="{% url 'main:login' %}" class="font-medium text-[#074173] hover:text-[#0A5B8C]">
+            Login here
+            </a>
+        </p>
+        </div>
+    </div>
+    </div>
+    {% endblock content %}
+    ```
+    The `register.html` file extends the `base.html` template to maintain a consistent layout across the web application. It sets the page title to "Register" in the meta block and defines the registration form in the content block. The form is centered on the page with the help of Tailwind CSS classes like `min-h-screen`, `flex`, and `justify-center`. The form itself is styled using utility classes and is wrapped in a div with the class `form-style`, which connects it to the global styles defined earlier. Each form field is dynamically generated using Django's form rendering, with error handling and field labels displayed. Error icons (a red warning symbol) appear if the field contains errors, making it user-friendly and easy to understand. The "Register" button at the bottom is styled with a custom color that turns slightly darker on hover, and it includes a focus ring for accessibility. If there are any messages (such as errors or other notifications), they are displayed in a red alert box. Lastly, the page includes a prompt for users who already have an account, offering a link to the login page styled with a hover effect for enhanced user experience.
+
+    **after that, modify the home page :**
+    Create a card_info.html file in the main/templates directory, then add the following HTML code:
+    ```
+    <div class="bg-[#3b82f6] rounded-xl overflow-hidden border-2 border-[#FFF6E9]">
+        <div class="p-4 animate-shine">
+          <h5 class="text-lg font-semibold text-[#FFF6E9]">{{ title }}</h5>
+          <p class="text-[#FFF6E9]">{{ value }}</p>
+        </div>
+    </div>
+    ```
+
+    and create a card_object.html file in the main/templates directory, then add the following HTML code:
+    ```
+    <div class="relative break-inside-avoid">
+      <!-- Absolute top icons -->
+      <div class="absolute top-2 z-10 left-1/2 -translate-x-1/2 flex items-center -space-x-2">
+        <div class="w-[3rem] h-8 bg-gray-200 rounded-md opacity-80 -rotate-90"></div>
+        <div class="w-[3rem] h-8 bg-gray-200 rounded-md opacity-80 -rotate-90"></div>
+      </div>
+      <!-- Main content card -->
+      <div class="relative top-5 bg-white shadow-md rounded-lg mb-6 break-inside-avoid flex flex-col border-2 border-indigo-300 transform rotate-1 hover:rotate-0 transition-transform duration-300">
+        <!-- Header section -->
+        <div class="bg-[#41A06F] text-gray-800 p-4 rounded-t-lg border-b-2 border-[#41A06F]">
+          <h3 class="font-bold text-xl mb-2 text-[#FFF6E9]">{{object_entry.name}}</h3>
+          <p class="text-gray-600">{{object_entry.time}}</p>
+        </div>
+
+      <!-- Body section -->
+        <div class="p-4">
+          <p class="font-semibold text-lg mb-2">Description</p>
+          <p class="text-gray-700 mb-2">
+            <span class="bg-[linear-gradient(to_bottom,transparent_0%,transparent_calc(100%_-_1px),#CDC1FF_calc(100%_-_1px))] bg-[length:100%_1.5rem] pb-1">{{object_entry.description}}</span>
+          </p>
+
+          <!-- Size section -->
+          <div class="mt-4">
+            <p class="text-gray-700 font-semibold mb-2">Price</p>
+            <div class="relative pt-1">
+              <div class="flex mb-2 items-center justify-between">
+                <div>
+                  <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-indigo-600 bg-indigo-200">
+                    {% if object_entry.price > 10 %}10+{% else %}{{object_entry.price}}{% endif %}
+                  </span>
+                </div>
+              </div>
+
+                <!-- Progress bar -->
+                <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-indigo-200">
+                  <div style="width:{% if object_entry.price > 10 %}100%{% else %}{{ object_entry.price }}0%{% endif %}" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-indigo-500"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action buttons -->
+          <div class="absolute top-0 -right-4 flex space-x-1">
+            <a href="{% url 'main:edit_object' object_entry.pk %}" class="bg-yellow-500 hover:bg-yellow-600 text-white rounded-full p-2 transition duration-300 shadow-md">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+              </svg>
+            </a>
+            <a href="{% url 'main:delete_object' object_entry.pk %}" class="bg-red-500 hover:bg-red-600 text-white rounded-full p-2 transition duration-300 shadow-md">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+              </svg>
+            </a>
+        </div>
+      </div>
+    </div>
+    ```
+
+    **After everything is done, we need to merge card_info.html, card_object.html, and very-sad.png in the main.html template. Modify main.html like this:**
+    ```
+    {% extends 'base.html' %}
+    {% load static %}
+
+    {% block meta %}
+    <title>DFootball</title>
+    {% endblock meta %}
+    {% block content %}
+    {% include 'navbar.html' %}
+    <div class="overflow-x-hidden px-4 md:px-8 pb-8 pt-24 min-h-screen bg-[#FFF6E9] flex flex-col">
+      <div class="p-2 mb-6 relative">
+        <div class="relative grid grid-cols-1 z-30 md:grid-cols-3 gap-8">
+          {% include "card_info.html" with title='NAME APP' value=name_app %}
+          {% include "card_info.html" with title='Name' value=name %}
+          {% include "card_info.html" with title='Class' value=class %}
+        </div>
+        <div class="w-full px-6 absolute top-[44px] left-0 z-20 hidden md:flex">
+          <div class="w-full min-h-4 bg-[#074173]"></div>
+        </div>
+        <div class="h-full w-full py-6 absolute top-0 left-0 z-20 md:hidden flex">
+          <div class="h-full min-w-4 bg-[#074173] mx-auto"></div>
+        </div>
+      </div> <!-- Close div for p-2 mb-6 relative -->
+
+      <div class="px-3 mb-4">
+        <div class="flex rounded-md items-center bg-[#41A06F] py-2 px-4 w-fit">
+          <h1 class="text-white text-center">Last Login: {{last_login}}</h1>
+        </div>
+      </div>
+
+      <div class="flex justify-end mb-6">
+        <a href="{% url 'main:model_object' %}" class="bg-[#41A06F] hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+        Add New Item
+        </a>
+      </div>
+
+      {% if not object_entries %}
+      <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
+        <img src="{% static 'image/very-sad.png' %}" alt="Sad face" class="w-32 h-32 mb-4"/>
+        <p class="text-center text-gray-600 mt-4">There is no item in DFootball.</p>
+      </div>
+      {% else %}
+      <div class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6 w-full">
+        {% for object_entry in object_entries %}
+          {% include 'card_object.html' with object_entry=object_entry %}
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div> <!-- Close div for overflow-x-hidden -->
+    {% endblock content %}
+    ```
+
+    **after that, style the create_mood_entry.html as follows:**
+    ```
+    {% extends 'base.html' %}
+    {% load static %}
+    {% block meta %}
+    <title>Add Item</title>
+    {% endblock meta %}
+
+    {% block content %}
+    {% include 'navbar.html' %}
+
+    <div class="flex flex-col min-h-screen bg-[#FFF6E9]">
+    <div class="container mx-auto px-4 py-8 mt-16 max-w-xl">
+        <h1 class="text-3xl font-bold text-center mb-8 text-black">Create Object</h1>
+    
+        <div class="bg-white shadow-md rounded-lg p-6 form-style">
+        <form method="POST" class="space-y-6">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="flex flex-col">
+                <label for="{{ field.id_for_label }}" class="mb-2 font-semibold text-gray-700">
+                {{ field.label }}
+                </label>
+                <div class="w-full">
+                {{ field }}
+                </div>
+                {% if field.help_text %}
+                <p class="mt-1 text-sm text-gray-500">{{ field.help_text }}</p>
+                {% endif %}
+                {% for error in field.errors %}
+                <p class="mt-1 text-sm text-red-600">{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endfor %}
+            <div class="flex justify-center mt-6">
+            <button type="submit" class="bg-[#41A06F] text-white font-semibold px-6 py-3 rounded-lg hover:bg-[#38A65E] transition duration-300 ease-in-out w-full">
+                Create Object
+            </button>
+            </div>
+        </form>
+        </div>
+    </div>
+    </div>
+
+    {% endblock %}
+    ```
+
+    **and the last, modify the edit_object into like this :**
+    ```
+    {% extends 'base.html' %}
+    {% load static %}
+    {% block meta %}
+    <title>Edit Object</title>
+    {% endblock meta %}
+
+    {% block content %}
+    {% include 'navbar.html' %}
+    <div class="flex flex-col min-h-screen bg-[#FFF6E9]">
+    <div class="container mx-auto px-4 py-8 mt-16 max-w-xl">
+        <h1 class="text-3xl font-bold text-center mb-8 text-black">Edit Item</h1>
+    
+        <div class="bg-white rounded-lg p-6 form-style">
+        <form method="POST" class="space-y-6">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="flex flex-col">
+                    <label for="{{ field.id_for_label }}" class="mb-2 font-semibold text-gray-700">
+                        {{ field.label }}
+                    </label>
+                    <div class="w-full">
+                        {{ field }}
+                    </div>
+                    {% if field.help_text %}
+                        <p class="mt-1 text-sm text-gray-500">{{ field.help_text }}</p>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            <div class="flex justify-center mt-6">
+                <button type="submit" class="bg-[#41A06F] text-white font-semibold px-6 py-3 rounded-lg hover:bg-[#38A65E] transition duration-300 ease-in-out w-full">
+                    Edit Item
+                </button>
+            </div>
+        </form>
+    </div>
+    </div>
+    </div>
+    {% endblock %}
+    ```
+
+

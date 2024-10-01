@@ -6,6 +6,8 @@ from main.views import show_main, model_object, show_xml, show_json, show_xml_by
 from main.views import register
 from main.views import login_user
 from main.views import logout_user
+from main.views import edit_object
+from main.views import delete_object
 
 app_name = 'main'
 
@@ -19,4 +21,6 @@ urlpatterns = [
     path('register/', register, name='register'),
     path('login/', login_user, name='login'),
     path('logout/', logout_user, name='logout'),
+    path('edit-mood/<uuid:id>', edit_object, name='edit_object'),
+    path('delete/<uuid:id>', delete_object, name='delete_object'), # adjust to the name of the function you created
 ]

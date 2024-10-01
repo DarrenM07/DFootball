@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.shortcuts import render, redirect, reverse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.core import serializers
 from main.forms import ModelObjectForm
 from main.models import ObjectEntry
@@ -22,7 +22,7 @@ def show_main(request):
         'class': 'PBP KKI',
         'name_app': 'E-Commerce',
         'object_entries': object_entries,
-        'last_login': request.COOKIES['last_login'],
+        'last_login': request.COOKIES.get('last_login'),
     }
     print(object_entries)
 
@@ -98,3 +98,26 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse('main:login'))
     response.delete_cookie('last_login')
     return response
+
+def edit_object(request, id):
+    # Get object entry based on id
+    object = ObjectEntry.objects.get(pk = id)
+
+    # Set object entry as an instance of the form
+    form = ModelObjectForm(request.POST or None, instance=object)
+
+    if form.is_valid() and request.method == "POST":
+        # Save form and return to home page
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {'form': form}
+    return render(request, "edit_object.html", context)
+
+def delete_object(request, id):
+    # Get object based on id
+    object = ObjectEntry.objects.get(pk = id)
+    # Delete object
+    object.delete()
+    # Return to home page
+    return HttpResponseRedirect(reverse('main:show_main'))
