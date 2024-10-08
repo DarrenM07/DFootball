@@ -1243,7 +1243,7 @@ Flexbox and Grid are powerful CSS layout models designed to create complex respo
     {% endblock content %}
     ```
 
-    **after that, style the create_mood_entry.html as follows:**
+    **after that, style the create_model_object.html as follows:**
     ```
     {% extends 'base.html' %}
     {% load static %}
@@ -1335,4 +1335,193 @@ Flexbox and Grid are powerful CSS layout models designed to create complex respo
     {% endblock %}
     ```
 
+### Assignment 6
+**1. Benefits of using JavaScript in developing web applications:**
 
+JavaScript is essential for creating dynamic and interactive web applications, offering a range of benefits. One of the key advantages is that it allows developers to build responsive user interfaces that can update without reloading the page, improving user experience. Features like real-time form validation, content updates, and animations enhance interactivity. JavaScript's support for asynchronous operations (like AJAX) enables seamless communication with the server, allowing data to be fetched or submitted in the background without interrupting the user's experience. Additionally, JavaScript is cross-browser compatible, ensuring that applications function consistently across different platforms. The language can also be used on both the client and server sides (thanks to Node.js), making it a versatile tool for full-stack development, allowing developers to use a single language across the entire web application stack.
+
+**2. Why we need to use `await` when calling `fetch()`:**
+
+When using `fetch()` to make HTTP requests in JavaScript, the function returns a promise that represents the eventual completion (or failure) of the request. Since the operation is asynchronous, it does not return the data immediately. The `await` keyword is used to pause the execution of the surrounding code until the promise resolves, ensuring that the program waits for the data before proceeding. Without `await`, the code following the `fetch()` call will execute immediately, even though the data has not yet been retrieved, which can lead to errors or incomplete data being processed. By using `await`, the function ensures that the HTTP request completes before moving on to the next operation, preventing potential issues caused by the asynchronous nature of `fetch()`.
+
+**3. Why we need to use the `csrf_exempt` decorator on the view used for AJAX POST requests:**
+
+In Django, the CSRF (Cross-Site Request Forgery) protection mechanism is applied to all POST requests to ensure that they are coming from a trusted source, such as within the same site. When using AJAX to send POST requests, the server expects a valid CSRF token to be included in the request headers. If the token is missing, Django will block the request as a security measure. The `csrf_exempt` decorator can be used to bypass this check for specific views where including a CSRF token might not be possible or necessary, such as certain API endpoints. However, this should be done with caution, as disabling CSRF protection entirely for a view can expose the application to potential attacks. A better practice is to include the CSRF token in the AJAX request headers, but `csrf_exempt` can be useful in cases where this is not feasible.
+
+**4. Why sanitization can't be done only in the front-end:**
+
+Relying solely on front-end input sanitization for security is risky because the client-side code can be easily manipulated or bypassed by attackers. Users can modify or disable JavaScript on their browser, or directly send malicious requests to the server, skipping any client-side validation. This makes front-end sanitization insufficient for protecting against malicious input, such as SQL injection or XSS (Cross-Site Scripting). Therefore, while front-end validation can improve user experience by catching errors early, sanitization on the back-end is crucial for ensuring the data that reaches the server is clean and secure. The back-end is the only environment fully controlled by the application and thus must enforce strict data validation and sanitization to protect against potential vulnerabilities.
+
+**5. Explain step by step**
+- Sanitization can't be done solely on the front-end because users can manipulate or disable JavaScript, bypassing client-side validation. Malicious input could be sent directly to the server, so back-end sanitization is essential for security.
+
+For AJAX GET requests, modify the data cards to use AJAX for retrieving data. Ensure that only data belonging to the logged-in user is fetched and displayed.
+
+add this code in main.html :
+```
+async function getProductEntries(){
+      return fetch("{% url 'main:show_json' %}").then((res) => res.json())
+  }
+```
+
+- The `refreshObjectEntries` function dynamically updates the content of an HTML element with the ID `model_object_cards` by fetching and displaying object data asynchronously. First, it clears the element’s existing content and resets its CSS class. Then, it calls the `getObjectEntries()` function to retrieve data, using the `await` keyword to handle the asynchronous request. If no data is available, a message with a sad image is displayed, indicating that no object data is present. If data is found, the function loops through the entries and creates HTML cards for each object. These cards display sanitized object details, such as the name, description, price, and a rating visualized with a progress bar. Each card also includes action buttons for editing and deleting the object, linking to the appropriate URLs. Finally, the updated HTML and class are applied to the `model_object_cards` element.
+```
+async function refreshObjectEntries() {
+    document.getElementById("model_object_cards").innerHTML = "";
+    document.getElementById("model_object_cards").className = "";
+    const objectEntries = await getObjectEntries();
+    let htmlString = "";
+    let classNameString = "";
+
+    if (objectEntries.length === 0) {
+        classNameString = "flex flex-col items-center justify-center min-h-[24rem] p-6";
+        htmlString = `
+            <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
+                <img src="{% static 'image/sedih-banget.png' %}" alt="Sad face" class="w-32 h-32 mb-4"/>
+                <p class="text-center text-gray-600 mt-4">No object data on DFootball yet.</p>
+            </div>
+        `;
+    }
+    else {
+        classNameString = "columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6 w-full"
+        objectEntries.forEach((item) => {
+            const name = DOMPurify.sanitize(item.fields.name);
+            const description = DOMPurify.sanitize(item.fields.description);
+            const price = DOMPurify.sanitize(item.fields.price);
+            htmlString += `
+            <div class="relative break-inside-avoid">
+                <div class="absolute top-1 z-10 left-1/2 -translate-x-1/2 flex items-center -space-x-2">
+                      <img src="{% static 'image/Football.png' %}" alt="Football" class="w-20 h-20 mb-4"/>
+                </div>
+                <div class="relative top-5 bg-white shadow-md rounded-lg mb-6 break-inside-avoid flex flex-col border-2 border-[#3b82f6] transform rotate-1 hover:rotate-0 transition-transform duration-300">
+                    <div class="bg-[#074173] text-white p-4 rounded-t-lg border-b-2 border-[#3b82f6]">
+                        <h3 class="font-bold text-xl mb-2">${name}</h3>
+                    </div>
+                    <div class="p-4">
+                      <div class="mb-4">
+                          <p class="font-semibold text-lg mb-2">Price:</p>
+                          <p class="text-gray-700">Rp. ${price}</p>
+                      </div>
+                      <div class="mb-4">
+                          <p class="font-semibold text-lg mb-2">Description:</p>
+                          <p class="text-gray-600">${description}</p>
+                      </div>
+
+                      <div class="mt-4">
+                          <p class="text-gray-700 font-semibold mb-2">Rating</p>
+                          <div class="relative pt-1">
+                              <div class="flex mb-2 items-center justify-between">
+                                  <div>
+                                      <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blue-600 bg-blue-200">
+                                          ${item.fields.rating > 10 ? '10+' : item.fields.rating}
+                                      </span>
+                                  </div>
+                              </div>
+                                <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-indigo-200">
+                                    <div style="width: ${item.fields.rating > 10 ? 100 : item.fields.rating * 10}%;" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-[#41A06F]"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute top-0 -right-4 flex space-x-1">
+                    <a href="/edit-object/${item.pk}" class="bg-yellow-500 hover:bg-yellow-600 text-white rounded-full p-2 transition duration-300 shadow-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                        </svg>
+                    </a>
+                    <a href="/delete/${item.pk}" class="bg-red-500 hover:bg-red-600 text-white rounded-full p-2 transition duration-300 shadow-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+              `;
+        });
+    }
+    document.getElementById("model_object_cards").className = classNameString;
+    document.getElementById("model_object_cards").innerHTML = htmlString;
+```
+
+- Create a button that opens a modal with a form for adding a object entry. And add this code in main.html
+
+```
+<button data-modal-target="crudModal" data-modal-toggle="crudModal" class="btn bg-[#41A06F] hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105" onclick="showModal();">
+        Add New Item by AJAX
+      </button>
+```
+This code creates a button element designed to trigger the display of a modal (popup) when clicked. The button uses `data-modal-target` and `data-modal-toggle` attributes to specify the modal with the ID `crudModal` as the target. The button's appearance is styled with various Tailwind CSS classes, giving it a green background (`bg-[#41A06F]`), white text, and rounded corners. On hover, the background color transitions to indigo (`hover:bg-indigo-600`), and the button animates with a slight upward movement (`hover:-translate-y-1`) and scaling effect (`hover:scale-105`). These transitions are smooth, with a duration of 300 milliseconds (`transition duration-300 ease-in-out`). The button also calls a JavaScript function `showModal()` when clicked, which is likely responsible for displaying the modal that allows users to add a new item via AJAX.
+
+- Create a new view function to add a new object entry to the database. And add this in views.py
+```
+@csrf_exempt
+@require_POST
+def add_model_object_ajax(request):
+    name = strip_tags(request.POST.get("name"))
+    price = strip_tags(request.POST.get("price"))
+    description = strip_tags(request.POST.get("description"))
+    rating = strip_tags(request.POST.get("rating"))
+    user = request.user
+
+    new_object = ObjectEntry(
+        name= name, 
+        price=price,
+        description=description,
+        rating=rating,
+        user=user
+    )
+    new_object.save()
+
+    return HttpResponse(b"CREATED", status=201)
+```
+The `add_model_object_ajax` view function in Django handles an AJAX POST request to create a new object entry in the database. It bypasses CSRF protection and ensures only POST requests are allowed. The function retrieves and sanitizes user inputs like `name`, `price`, `description`, and `rating`, then associates the logged-in user with the new entry. After saving the new object to the database, it responds with a "CREATED" message and a 201 status code, indicating successful creation.
+
+- Create a path that routes to the new view function you created. And add this in your urls.py
+```
+from main.views import show_main,..., add_model_object_ajax
+
+path('create-ajax', add_model_object_ajax, name='add_model_object_ajax'),
+```
+This code snippet adds a new route to the Django application's URL configuration by defining a path that links to the `add_model_object_ajax` view function. By importing the necessary view from the `main.views` module and using the `path` function, it establishes a URL endpoint, `'create-ajax'`, that users can access to trigger the AJAX request for creating a new object entry. The `name='add_model_object_ajax'` parameter provides a unique identifier for this route, allowing it to be referenced easily throughout the application, such as in templates or when constructing URLs programmatically. This integration facilitates seamless communication between the front-end and back-end, enabling the dynamic creation of object entries without needing a full page refresh.
+
+- Connect the form you created inside the modal to the path. And add this in the main.html
+```
+function addObjectEntry() {
+    fetch("{% url 'main:add_model_object_ajax' %}", {
+        method: "POST",
+        body: new FormData(document.querySelector('#objectEntryForm')),
+    })
+    .then(response => {
+        refreshObjectEntries(); // Refresh the entries after submission
+        hideModal(); // Hide the modal after submission
+    })
+    .catch(error => console.error('Error:', error));
+
+    return false; // Prevent default form submission
+  }
+  document.getElementById("objectEntryForm").addEventListener("submit", (e) => {
+    e.preventDefault(); // Prevents default form submission behavior
+    addObjectEntry();
+  });
+```
+This code snippet connects a modal form for adding a new object entry to the designated URL path for AJAX submissions. The `addObjectEntry` function utilizes the Fetch API to send a POST request to the URL generated by Django’s `{% url 'main:add_model_object_ajax' %}` template tag. It captures form data using `new FormData(document.querySelector('#objectEntryForm'))` and submits it in the request body. Upon successful submission, it refreshes the displayed object entries with `refreshObjectEntries()` and closes the modal using `hideModal()`. In case of an error, it logs the issue to the console. The code also prevents the default form submission behavior by attaching an event listener that calls `e.preventDefault()`, ensuring the form data is sent via AJAX without refreshing the page, thus enhancing user experience through asynchronous data handling.
+
+- Perform refresh asynchronous on the main page to display the latest item list without reloading the entire main page. And add this into main.html:
+```
+refreshObjectEntries();
+  const modal = document.getElementById('crudModal');
+  const modalContent = document.getElementById('crudModalContent');
+
+  function showModal() {
+      const modal = document.getElementById('crudModal');
+      const modalContent = document.getElementById('crudModalContent');
+
+      modal.classList.remove('hidden'); 
+      setTimeout(() => {
+        modalContent.classList.remove('opacity-0', 'scale-95');
+        modalContent.classList.add('opacity-100', 'scale-100');
+      }, 50); 
+  }
+```
+This code snippet is designed to manage the display of a modal dialog in a web application. It begins by invoking the `refreshObjectEntries()` function, which likely updates the content displayed on the page with the latest object entries. The modal's HTML elements are selected using `getElementById`, targeting the modal itself (`crudModal`) and its content (`crudModalContent`). The `showModal` function is defined to display the modal when called. Inside this function, the `hidden` class is removed from the modal element, making it visible. A `setTimeout` function is used to create a brief delay of 50 milliseconds before altering the appearance of the modal's content, allowing for a smoother transition effect. During this timeout, the classes `opacity-0` and `scale-95` are removed from the modal content, while `opacity-100` and `scale-100` are added, creating a fade-in and scale-up effect that enhances the user experience. Overall, this code facilitates a visually appealing and user-friendly modal display mechanism.
